@@ -147,7 +147,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./Docker/mysql/catalog.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
-      - "53301:3306"
+      - "41301:3306"
 
   phpmyadmin:
     image: phpmyadmin:5.2.3

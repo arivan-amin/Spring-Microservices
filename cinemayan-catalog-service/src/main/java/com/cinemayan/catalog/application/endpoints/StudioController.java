@@ -1,6 +1,6 @@
 package com.cinemayan.catalog.application.endpoints;
 
-import com.cinemayan.catalog.application.config.cache.StudioCaches;
+import com.cinemayan.catalog.application.config.cache.CategoryCacheList;
 import com.cinemayan.catalog.application.request.studio.CreateStudioRequest;
 import com.cinemayan.catalog.application.request.studio.UpdateStudioRequest;
 import com.cinemayan.catalog.application.response.GetStudiosResponse;
@@ -41,7 +41,7 @@ class StudioController {
     private final DeleteStudioCommand deleteCommand;
 
     @GetMapping (StudioApiURLs.GET_STUDIOS_URL)
-    @Cacheable (StudioCaches.GET_ALL_STUDIOS)
+    @Cacheable (CategoryCacheList.ALL_STUDIOS)
     @Operation (summary = "Get a list of studios")
     @ResponseStatus (HttpStatus.OK)
     public GetStudiosResponse getAllStudios (
@@ -58,7 +58,7 @@ class StudioController {
     }
 
     @GetMapping (StudioApiURLs.GET_STUDIO_BY_ID_URL)
-    @Cacheable (StudioCaches.GET_STUDIO_BY_ID)
+    @Cacheable (CategoryCacheList.STUDIO_BY_ID)
     @Operation (summary = "Get a studio by ID")
     @ResponseStatus (HttpStatus.OK)
     public StudioResponse getStudioById (@PathVariable UUID id) {
@@ -69,7 +69,7 @@ class StudioController {
 
     @PostMapping (StudioApiURLs.CREATE_STUDIO_URL)
     @Operation (summary = "Creates a studio")
-    @CacheEvict (cacheNames = { StudioCaches.GET_ALL_STUDIOS, StudioCaches.GET_STUDIO_BY_ID },
+    @CacheEvict (cacheNames = { CategoryCacheList.ALL_STUDIOS, CategoryCacheList.STUDIO_BY_ID },
         allEntries = true)
     @ResponseStatus (HttpStatus.CREATED)
     public StudioResponse createStudio (@RequestBody @Valid CreateStudioRequest request) {
@@ -79,7 +79,7 @@ class StudioController {
 
     @PutMapping (StudioApiURLs.UPDATE_STUDIO_URL)
     @Operation (summary = "Updates a studio")
-    @CacheEvict (cacheNames = { StudioCaches.GET_ALL_STUDIOS, StudioCaches.GET_STUDIO_BY_ID },
+    @CacheEvict (cacheNames = { CategoryCacheList.ALL_STUDIOS, CategoryCacheList.STUDIO_BY_ID },
         allEntries = true)
     @ResponseStatus (HttpStatus.OK)
     public StudioResponse updateStudio (@PathVariable UUID id,
@@ -90,7 +90,7 @@ class StudioController {
 
     @DeleteMapping (StudioApiURLs.DELETE_STUDIO_URL)
     @Operation (summary = "Deletes a studio")
-    @CacheEvict (cacheNames = { StudioCaches.GET_ALL_STUDIOS, StudioCaches.GET_STUDIO_BY_ID },
+    @CacheEvict (cacheNames = { CategoryCacheList.ALL_STUDIOS, CategoryCacheList.STUDIO_BY_ID },
         allEntries = true)
     @ResponseStatus (HttpStatus.NO_CONTENT)
     public void deleteStudio (@PathVariable UUID id) {

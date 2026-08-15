@@ -9,8 +9,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import org.junit.jupiter.api.Test;
 
 import static com.cinemayan.testing.architecture.rules.CleanArchitectureRules.DOMAIN_PACKAGE;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.library.GeneralCodingRules.testClassesShouldResideInTheSamePackageAsImplementation;
 
 public interface TestingBestPracticeRules extends BaseUnitTest {
@@ -79,5 +78,15 @@ public interface TestingBestPracticeRules extends BaseUnitTest {
         .areAnnotatedWith(Test.class)
         .should(new TestMethodNamingArchCondition())
         .because("Test method names must follow the pattern: " +
-            "methodBeingTested_should{ExpectedBehavior}_when{Condition}");
+                 "methodBeingTested_should{ExpectedBehavior}_when{Condition}");
+
+    @ArchTest
+    ArchRule TEST_CLASSES_SHOULD_ONLY_USE_ASSERTJ_ASSERTIONS = noClasses().that()
+        .haveSimpleNameEndingWith(TEST_SUFFIX)
+        .or()
+        .haveSimpleNameEndingWith(INTEGRATION_TEST_SUFFIX)
+        .should()
+        .dependOnClassesThat()
+        .haveFullyQualifiedName("org.junit.jupiter.api.Assertions")
+        .because("assertions must only use AssertJ (org.assertj.core.api.Assertions");
 }

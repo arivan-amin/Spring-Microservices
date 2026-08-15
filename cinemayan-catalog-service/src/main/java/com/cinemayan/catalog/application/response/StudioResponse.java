@@ -15,7 +15,7 @@ public class StudioResponse {
     LocalDate foundedDate;
 
     public static StudioResponse of (Studio studio) {
-        return new StudioResponse(studio.getId()
-            .getValue(), studio.getName(), studio.getCountry(), studio.getFoundedDate());
+        return new StudioResponse(studio.getId(), studio.getName(), studio.getCountry(),
+            studio.getFoundedDate());
     }
 }

@@ -1,7 +1,6 @@
 package com.cinemayan.catalog.infrastructure.storage.studio;
 
 import com.cinemayan.catalog.domain.studio.entity.Studio;
-import com.cinemayan.catalog.domain.studio.entity.StudioId;
 import com.cinemayan.catalog.utility.StudioTestData;
 import com.cinemayan.testing.architecture.bases.BaseUnitTest;
 import lombok.extern.slf4j.Slf4j;
@@ -18,17 +17,14 @@ class StudioMapperTest implements BaseUnitTest {
     void fromDomain_shouldMapAllFields_whenStudioIsValid () {
         // given
         Studio studio = StudioTestData.withName("Some studio");
-        studio.setId(StudioId.of(UUID.randomUUID()));
+        studio.setId(UUID.randomUUID());
 
         // when
         StudioEntity result = StudioMapper.fromDomain(studio);
 
         // then
-        assertThat(result.getId()).isEqualTo(studio.getId()
-            .getValue());
-        assertThat(result.getName()).isEqualTo(studio.getName());
-        assertThat(result.getCountry()).isEqualTo(studio.getCountry());
-        assertThat(result.getFoundedDate()).isEqualTo(studio.getFoundedDate());
+        assertThat(result).usingRecursiveComparison()
+            .isEqualTo(studio);
     }
 
     @Test
@@ -41,29 +37,22 @@ class StudioMapperTest implements BaseUnitTest {
         Studio result = StudioMapper.toDomain(entity);
 
         // then
-        assertThat(result.getId()
-            .getValue()).isEqualTo(entity.getId());
-        assertThat(result.getName()).isEqualTo(entity.getName());
-        assertThat(result.getCountry()).isEqualTo(entity.getCountry());
-        assertThat(result.getFoundedDate()).isEqualTo(entity.getFoundedDate());
+        assertThat(result).usingRecursiveComparison()
+            .isEqualTo(entity);
     }
 
     @Test
     void roundTrip_shouldPreserveAllFields_whenMappingToDomainAndBack () {
         // given
         Studio studio = StudioTestData.withDefaultName();
-        studio.setId(StudioId.of(UUID.randomUUID()));
+        studio.setId(UUID.randomUUID());
 
         // when
         StudioEntity entity = StudioMapper.fromDomain(studio);
         Studio result = StudioMapper.toDomain(entity);
 
         // then
-        assertThat(result.getId()
-            .getValue()).isEqualTo(studio.getId()
-            .getValue());
-        assertThat(result.getName()).isEqualTo(studio.getName());
-        assertThat(result.getCountry()).isEqualTo(studio.getCountry());
-        assertThat(result.getFoundedDate()).isEqualTo(studio.getFoundedDate());
+        assertThat(result).usingRecursiveComparison()
+            .isEqualTo(studio);
     }
 }

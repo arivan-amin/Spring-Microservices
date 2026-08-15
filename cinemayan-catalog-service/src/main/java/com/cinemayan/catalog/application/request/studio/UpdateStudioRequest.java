@@ -2,7 +2,6 @@ package com.cinemayan.catalog.application.request.studio;
 
 import com.cinemayan.catalog.domain.studio.command.UpdateStudioCommand;
 import com.cinemayan.catalog.domain.studio.entity.Studio;
-import com.cinemayan.catalog.domain.studio.entity.StudioId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import lombok.Value;
@@ -26,7 +25,7 @@ public class UpdateStudioRequest {
 
     public UpdateStudioCommand.Input toInput (UUID id) {
         Studio studio = new Studio();
-        studio.setId(StudioId.of(id));
+        studio.setId(id);
         studio.setName(name);
         studio.setCountry(country);
         studio.setFoundedDate(foundedDate);

@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners (AuditingEntityListener.class)
+@ToString
 public class StudioEntity {
 
     @Id

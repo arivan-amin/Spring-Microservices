@@ -2,7 +2,9 @@ package com.cinemayan.catalog.domain.studio.entity;
 
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -10,8 +12,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Studio {
 
-    private StudioId id;
+    private UUID id;
     private String name;
     private String country;
     private LocalDate foundedDate;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

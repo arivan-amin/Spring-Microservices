@@ -1,7 +1,6 @@
 package com.cinemayan.catalog.domain.studio.command;
 
 import com.cinemayan.catalog.domain.studio.entity.Studio;
-import com.cinemayan.catalog.domain.studio.entity.StudioId;
 import com.cinemayan.catalog.domain.studio.exception.StudioAlreadyExistsException;
 import com.cinemayan.catalog.domain.studio.exception.StudioErrorCode;
 import com.cinemayan.catalog.domain.studio.persistence.StudioStorage;
@@ -21,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 @Slf4j
 class CreateStudioCommandTest implements BaseUnitTest {
@@ -39,7 +39,7 @@ class CreateStudioCommandTest implements BaseUnitTest {
 
         UUID studioId = UUID.randomUUID();
         Studio savedStudio = StudioTestData.withDefaultName();
-        savedStudio.setId(StudioId.of(studioId));
+        savedStudio.setId(studioId);
 
         given(storage.create(studio)).willReturn(savedStudio);
 
@@ -48,11 +48,22 @@ class CreateStudioCommandTest implements BaseUnitTest {
         Studio result = output.getStudio();
 
         // then
-        assertThat(result.getId()
-            .getValue()).isEqualTo(studioId);
-        assertThat(result.getName()).isEqualTo(studio.getName());
-        assertThat(result.getCountry()).isEqualTo(studio.getCountry());
-        assertThat(result.getFoundedDate()).isEqualTo(studio.getFoundedDate());
+        assertThat(result).usingRecursiveComparison()
+            .isEqualTo(savedStudio);
+    }
+
+    @Test
+    void execute_shouldPassParameterToStorage_whenNameDoesNotExist () {
+        // given
+        Studio studio = StudioTestData.withDefaultName();
+        CreateStudioCommand.Input input = new CreateStudioCommand.Input(studio);
+
+        // when
+        CreateStudioCommand.Output output = command.execute(input);
+
+        // then
+        then(storage).should(times(1))
+            .create(studio);
     }
 
     @Test

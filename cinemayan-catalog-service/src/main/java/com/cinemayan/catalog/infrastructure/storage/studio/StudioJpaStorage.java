@@ -105,8 +105,7 @@ public class StudioJpaStorage implements StudioStorage {
     @Transactional
     @Override
     public Studio update (Studio studio) {
-        StudioEntity entity = repository.findById(studio.getId()
-                .getValue())
+        StudioEntity entity = repository.findById(studio.getId())
             .orElseThrow();
 
         entity.setName(studio.getName());

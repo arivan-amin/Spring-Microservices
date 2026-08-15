@@ -17,8 +17,7 @@ public class UpdateStudioCommand {
 
     public Output execute (Input input) {
         UUID studioId = input.getStudio()
-            .getId()
-            .getValue();
+            .getId();
         if (isStudioNotFound(studioId)) {
             log.warn("Studio update rejected, studio id = {} not found", input.getStudio()
                 .getId());
